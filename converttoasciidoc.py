@@ -83,7 +83,10 @@ def getSubmission(submission, submissionPath, originalRelativeSourcePath):
     logging.debug('dropBoxPath=%s, submissionPath=%s', dropBoxPath, submissionPath)
 
     sourceCodeFile = open(submissionPath, 'r')
-    sourceCode = sourceCodeFile.read()
+    try:
+        sourceCode = sourceCodeFile.read()
+    except UnicodeDecodeError:
+        sys.exit("Failed to read " + submissionPath)
     sourceCodeFile.close()
 
     submission.sourceFiles[originalRelativeSourcePath] = sourceCode
@@ -186,7 +189,7 @@ for entry in studentEntries:
     if studentNumber == None:
         continue
 
-    if not submissions.has_key(studentNumber):
+    if studentNumber not in submissions:
         submissions[studentNumber] = Submission(studentNumber)
 
     logging.debug('Processing entry for %s %s', studentName, studentNumber)
@@ -215,7 +218,7 @@ for entry in studentEntries:
 
 # Create one PDF for each student
 os.mkdir(assessmentTitle)
-for studentNumber, submission in submissions.iteritems():
+for studentNumber, submission in submissions.items():
     studentName = classList[studentNumber]
     asciidocSource = (
             ':doctype: book\n\n'
@@ -226,7 +229,7 @@ for studentNumber, submission in submissions.iteritems():
             '== ' + assessmentTitle + '\n' + studentName + '\n\n'
     )
 
-    for relativeFilePath, sourceCode in submission.sourceFiles.iteritems():
+    for relativeFilePath, sourceCode in submission.sourceFiles.items():
         filename, fileExt = os.path.splitext(relativeFilePath)
         if fileExt in extensions:
             language = extensions[fileExt]
