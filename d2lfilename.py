@@ -4,7 +4,7 @@ import re
 
 def getstudent(entryName, classList):
     ''' Determines the student that a file or folder belongs to.
-        e.g 1691733-13758497 - Bob Smith- Sep 11, 2017 541 PM - Newspaper
+        e.g 1691733-13758497 - Rohit Nath- Sep 11, 2017 541 PM - Newspaper
     '''
     #for studentNumber, studentName in classList.iteritems():
     for studentNumber, studentName in classList.items():
@@ -18,7 +18,7 @@ def getstudent(entryName, classList):
 
 def getoriginalname(entryName):
     ''' Determines the original file or folder name
-        e.g. 1691733-13758497 - Bob Smith- Sep 11, 2017 541 PM - Newspaper
+        e.g. 1691733-13758497 - Rohit Nath- Sep 11, 2017 541 PM - Newspaper
     '''
     #e.g. - Sep 18, 2017 238 PM -
     date = "- \S{3} \d{1,2}, \d{4} \d{3,4} \S{2} - "
